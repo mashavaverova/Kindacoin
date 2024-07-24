@@ -1,4 +1,3 @@
-// src/components/TransactionForm.jsx
 import { useState } from 'react';
 import { createTransaction } from '../services/api';
 
@@ -15,7 +14,7 @@ const TransactionForm = () => {
       await createTransaction(transactionData);
       setRecipient('');
       setAmount('');
-      setError(''); // Clear error on success
+      setError(''); 
     } catch (error) {
       setError('Error submitting transaction: ' + error.message);
     }

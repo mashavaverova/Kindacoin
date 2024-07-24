@@ -1,4 +1,3 @@
-// src/components/Register.jsx
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { register } from '../services/api';
@@ -18,7 +17,7 @@ const Register = () => {
     try {
       const response = await register(formData);
       console.log('Registration successful:', response.data);
-      navigate('/login'); // Optionally redirect to login page
+      navigate('/login'); 
     } catch (error) {
       console.error('Registration failed:', error);
     }

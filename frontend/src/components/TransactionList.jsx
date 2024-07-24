@@ -2,7 +2,6 @@
 import PropTypes from 'prop-types';
 
 const TransactionList = ({ transactions }) => {
-  // Handle the case when transactions is not an array
   if (!Array.isArray(transactions)) {
     return <p>No transactions available.</p>;
   }
