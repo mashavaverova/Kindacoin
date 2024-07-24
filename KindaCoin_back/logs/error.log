@@ -602,3 +602,39 @@
     Status: 400,
     Success: false,
     Message: Email or password not provided
+2024-07-23 18:23:53,
+    Method: POST,
+    URL: /api/v1/auth/login,
+    Status: 401,
+    Success: false,
+    Message: Login failed
+2024-07-23 18:25:44,
+    Method: POST,
+    URL: /api/v1/auth/login,
+    Status: 401,
+    Success: false,
+    Message: Login failed
+2024-07-23 18:41:09,
+    Method: POST,
+    URL: /api/v1/auth/login,
+    Status: 401,
+    Success: false,
+    Message: Login failed
+2024-07-23 18:56:27,
+    Method: POST,
+    URL: /api/v1/auth/login,
+    Status: 401,
+    Success: false,
+    Message: Login failed
+2024-07-23 19:10:56,
+    Method: POST,
+    URL: /api/v1/auth/login,
+    Status: 401,
+    Success: false,
+    Message: Login failed
+2024-07-23 19:18:57,
+    Method: POST,
+    URL: /api/v1/wallet/transaction,
+    Status: 401,
+    Success: false,
+    Message: Unauthorized
