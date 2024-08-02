@@ -13,8 +13,9 @@ export const mineBlock = asyncHandler(async (req, res, next) => {
   const block = blockchain.addBlock({ data });
 
   console.log('New block mined:'.cyan, block);
-  
+
   try {
+    // Attempt to save the block
     const savedBlock = await BlockModel.create({
       timestamp: block.timestamp,
       blockIndex: block.blockIndex,
@@ -27,14 +28,22 @@ export const mineBlock = asyncHandler(async (req, res, next) => {
 
     console.log('Block saved to MongoDB:', savedBlock);
 
+    // Broadcast the new block
     pubnubServer.broadcast();
 
     res
       .status(201)
       .json(new ResponseModel({ success: true, statusCode: 201, data: block }));
   } catch (error) {
-    console.error('Error saving block to MongoDB:', error);
-    return next(new ErrorResponse('Error saving block', 500));
+    if (error.code === 11000) {
+      // Handle duplicate key error
+      console.error('Duplicate block index:', error);
+      return next(new ErrorResponse('Block with this index already exists', 409));
+    } else {
+      // Handle other errors
+      console.error('Error saving block to MongoDB:', error);
+      return next(new ErrorResponse('Error saving block', 500));
+    }
   }
 });
 

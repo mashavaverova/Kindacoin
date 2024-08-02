@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { login } from '../services/api';
 import { useAuth } from '../context/useAuth';
 import '../styles/general.css';
+import logo from '../pics/logo.png';
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -51,29 +52,35 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email</label>
+    <div className="login-container">
+      <header className="login-header">
+        <img src={logo} alt="Logo" className="login-logo" />
+        <h2 className="login-title">Login</h2>
+      </header>
+      <form onSubmit={handleSubmit} className="login-form">
+        <div className="form-group">
+          <label htmlFor="email">Email</label>
           <input
             type="email"
+            id="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
             required
           />
         </div>
-        <div>
-          <label>Password</label>
+        <div className="form-group">
+          <label htmlFor="password">Password</label>
           <input
             type="password"
+            id="password"
             name="password"
             value={formData.password}
             onChange={handleChange}
             required
           />
         </div>
-        <button type="submit">Login</button>
+        <button type="submit" className="login-button">Login</button>
       </form>
     </div>
   );

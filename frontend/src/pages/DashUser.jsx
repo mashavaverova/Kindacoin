@@ -1,20 +1,28 @@
-
 import { useState, useEffect } from 'react';
-import Logout from "../components/Logout";
-import TransactionForm from "../components/TransactionForm";
-import TransactionList from "../components/TransactionList"; 
+import Logout from '../components/Logout';
+import TransactionForm from '../components/TransactionForm';
+import TransactionList from '../components/TransactionList';
 import { createTransaction, getTransactions } from '../services/api';
+import '../styles/general.css'; // Import your general styles
+import logo from '../pics/logo.png';
 
 const UserDashboard = () => {
   const [transactions, setTransactions] = useState([]);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    // Fetch transactions when the component mounts
     const fetchTransactions = async () => {
       try {
-        const data = await getTransactions();
-        setTransactions(data);
+        const response = await getTransactions();
+        const transactionsData = response.data;
+
+        const transactionsArray = Object.values(transactionsData).map((transaction) => ({
+          ...transaction,
+          outputMap: Object.fromEntries(
+            Object.entries(transaction.outputMap).map(([key, value]) => [key, Number(value)])
+          ),
+        }));
+        setTransactions(transactionsArray);
       } catch (error) {
         setError('Error fetching transactions');
       }
@@ -26,30 +34,37 @@ const UserDashboard = () => {
   const handleCreateTransaction = async (data) => {
     try {
       await createTransaction(data);
-      // Refresh the transactions list after creating a new transaction
-      const updatedTransactions = await getTransactions();
+      const response = await getTransactions();
+      const updatedTransactionsData = response.data;
+      const updatedTransactions = Object.values(updatedTransactionsData).map((transaction) => ({
+        ...transaction,
+        outputMap: Object.fromEntries(
+          Object.entries(transaction.outputMap).map(([key, value]) => [key, Number(value)])
+        ),
+      }));
       setTransactions(updatedTransactions);
     } catch (error) {
       setError('Error creating transaction');
     }
   };
 
+  return (
+    <div className="dashboard-container">
+      <header className="dashboard-header">
+      <img src={logo} alt="Logo" className="logo" />
+        <h1 className="dashboard-title">User Dashboard</h1>
+      </header>
+      <Logout />
 
-    return (
-      <div>
-        <h1>User Dashboard</h1>
-        <p>Welcome, User!</p>
+      <TransactionForm onCreate={handleCreateTransaction} />
 
+      {error && <p className="error-message">{error}</p>}
 
-        <TransactionForm onCreate={handleCreateTransaction} />
+      <TransactionList transactions={transactions} />
 
-        {error && <p>{error}</p>}
+    
+    </div>
+  );
+};
 
-        <TransactionList transactions={transactions} />
-
-        <Logout />
-      </div>
-    );
-  };
-  
-  export default UserDashboard;
+export default UserDashboard;
